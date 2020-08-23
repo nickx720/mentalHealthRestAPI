@@ -16,8 +16,9 @@ router.post('/chatbot', async (req, res, next) => {
             path: '/v4/emotion',
             method: 'POST',
         }
-        const emotions = helper.postData(options, content.value);
-        res.send("About birds")
+        const emotions = await helper.postData(options, content.value);
+        console.log(emotions);
+        res.send(emotions)
     } catch (e) {
         next(e)
     }

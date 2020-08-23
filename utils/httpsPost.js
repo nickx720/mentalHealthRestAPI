@@ -3,27 +3,29 @@ const FormData = require('form-data');
 const { lensProp, set } = require('ramda');
 
 const postData = (options, inboundData) => {
-    const form = new FormData();
-    form.append('api_key', process.env.api_key);
-    form.append('text', inboundData);
-    const header = lensProp('headers');
-    const appendOptions = set(header, form.getHeaders(), options);
-    const req = https.request(appendOptions, (res) => {
-        let data = {};
-        res.on('data', chunk => {
-            data += chunk;
+    return new Promise((resolve, reject) => {
+        const form = new FormData();
+        form.append('api_key', process.env.api_key);
+        form.append('text', inboundData);
+        const header = lensProp('headers');
+        const appendOptions = set(header, form.getHeaders(), options);
+        let output;
+        const req = https.request(appendOptions, (res) => {
+            let data = undefined;
+            res.on('data', chunk => {
+                data = chunk;
+            })
+            res.on('end', () => {
+                output = data;
+                resolve(JSON.parse(output))
+            })
+        });
+        req.on('error', (err) => {
+            console.log('request failed')
+            reject(err);
         })
-        res.on('end', () => {
-            console.log(data)
-        })
-    });
-    req.on('error', (err) => {
-        console.log('request failed')
-        throw err;
-    })
-    form.pipe(req);
-    req.on('response', function (res) {
-        console.log(res.statusCode);
+        form.pipe(req);
+        req.end()
     });
 }
 
