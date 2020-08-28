@@ -7,9 +7,11 @@ const helper = require('../utils/httpsPost');
 
 const sadResponse = ['Why do you feel this way?', 'Tell me more!', 'Are you alright', 'Please elucidate your feelings', 'Go on talk to me.']
 const happyResponse = ['That sounds great', 'Good to know', 'Very good', 'I could not be happier']
-const angryResponse = ['You sound quite', 'Good to know', 'Very good', 'I could not be happier']
+const angryResponse = ['You sound quite aggresive', 'Try to calm down', 'It is not good to be angry', 'Please ask yourself if thats the right way to feel about this?']
 const excitedResponse = ['Wow', 'Congrats', 'Great job', 'I knew you could do it']
 const fearResponse = ['Try to focus on your breathing', 'I can understand, tell me more', 'Try to breathe slowly',]
+
+
 const lowestTohighest = (a, b) => a[1] - b[1];
 const multiplyBy10 = x => multiply(10, x)
 const multiplyArrayby10 = x => map(multiplyBy10, x);
